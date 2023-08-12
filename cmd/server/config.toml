@@ -1,0 +1,12 @@
+host = "0.0.0.0:8080"
+debug = true
+
+[mysql]
+dsn = "root:123456@tcp(127.0.0.1:3306)/transmit?charset=utf8mb4&parseTime=true&loc=Local"
+
+
+[log]
+file = "./logs/out.log"
+level = "debug"
+encoding = "json"
+compress = true
