@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"eos-layout/internal/state"
+	"eos-layout/internal/status"
 	"eos-layout/pkg/log"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ type Handler struct {
 }
 
 type response struct {
-	state.Response
+	status.Response
 	Data any `json:"data"`
 }
 
@@ -27,14 +27,14 @@ func (h *Handler) Success(ctx *gin.Context, data any) {
 	resp := response{Data: data}
 	resp.Code = 0
 	resp.Message = "success"
-	ctx.JSON(state.Success.StatusCode(), resp)
+	ctx.JSON(status.Success.StatusCode(), resp)
 }
 
 func (h *Handler) Error(ctx *gin.Context, err error) {
 	switch e := err.(type) {
-	case *state.Error:
+	case *status.Error:
 		ctx.JSON(e.Response())
 	default:
-		ctx.JSON(state.ErrorServer.Response(e))
+		ctx.JSON(status.ErrorServer.Response(e))
 	}
 }

@@ -3,7 +3,7 @@ package handler
 import (
 	"eos-layout/internal/dto/request"
 	"eos-layout/internal/service"
-	"eos-layout/internal/state"
+	"eos-layout/internal/status"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +34,7 @@ type areaHandler struct {
 func (h *areaHandler) Province(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	in := &request.Area{
@@ -67,7 +67,7 @@ func (h *areaHandler) ProvinceList(ctx *gin.Context) {
 func (h *areaHandler) City(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	in := &request.Area{
@@ -85,7 +85,7 @@ func (h *areaHandler) City(ctx *gin.Context) {
 func (h *areaHandler) CityList(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	key := ctx.Query("key")
@@ -105,7 +105,7 @@ func (h *areaHandler) CityList(ctx *gin.Context) {
 func (h *areaHandler) District(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	in := &request.Area{
@@ -123,7 +123,7 @@ func (h *areaHandler) District(ctx *gin.Context) {
 func (h *areaHandler) DistrictList(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	key := ctx.Query("key")
@@ -143,7 +143,7 @@ func (h *areaHandler) DistrictList(ctx *gin.Context) {
 func (h *areaHandler) Street(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	in := &request.Area{
@@ -161,7 +161,7 @@ func (h *areaHandler) Street(ctx *gin.Context) {
 func (h *areaHandler) StreetList(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	key := ctx.Query("key")
@@ -181,7 +181,7 @@ func (h *areaHandler) StreetList(ctx *gin.Context) {
 func (h *areaHandler) Committee(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	in := &request.Area{
@@ -199,7 +199,7 @@ func (h *areaHandler) Committee(ctx *gin.Context) {
 func (h *areaHandler) CommitteeList(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		h.Error(ctx, state.ErrorInvalidParams)
+		h.Error(ctx, status.ErrorInvalidParams)
 		return
 	}
 	key := ctx.Query("key")
