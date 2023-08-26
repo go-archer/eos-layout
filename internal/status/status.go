@@ -36,6 +36,14 @@ func (e *Error) Response(errs ...error) (int, *Response) {
 	return e.StatusCode(), &Response{Code: e.code, Message: msg}
 }
 
+func (e *Error) Message(msg string) *Error {
+	err := &Error{code: e.code, message: e.message}
+	if len(msg) != 0 {
+		err.message = msg
+	}
+	return err
+}
+
 func (e *Error) StatusCode() int {
 	switch e.Code() {
 	case ErrorServer.Code():
@@ -60,3 +68,12 @@ var (
 	ErrorServer        = NewError(1000, "服务内部错误")
 	ErrorInvalidParams = NewError(1001, "传入参数错误")
 )
+
+func IsRecordNotFound(err error) bool {
+	if err != nil {
+		if err.Error() == "record not found" {
+			return true
+		}
+	}
+	return false
+}

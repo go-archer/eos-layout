@@ -4,7 +4,7 @@ import (
 	"eos-layout/internal/config"
 	"eos-layout/internal/handler"
 	"eos-layout/internal/middleware"
-	v1 "eos-layout/internal/server/v1"
+	"eos-layout/internal/router/v1"
 	"eos-layout/pkg/http"
 	"eos-layout/pkg/log"
 
@@ -23,7 +23,7 @@ func NewHTTPServer(
 	}
 }
 
-// 服务接口，仅提供Run方法启动服务
+// Server 服务接口，仅提供Run方法启动服务
 type Server interface {
 	Run()
 }
@@ -40,14 +40,11 @@ func (s *httpServer) Run() {
 			s.log.Sugar().Errorln("server run error: ", rec)
 		}
 	}()
-	g := s.router()
+	g := s.initServer()
 	http.Run(g, s.cfg.Host)
 }
 
-/**
- * 统一路由管理
- */
-func (s *httpServer) router() *gin.Engine {
+func (s *httpServer) initServer() *gin.Engine {
 	if s.cfg.Debug {
 		gin.SetMode(gin.DebugMode)
 	} else {

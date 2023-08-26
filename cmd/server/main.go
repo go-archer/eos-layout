@@ -4,12 +4,22 @@ import (
 	"encoding/json"
 	"eos-layout/internal/config"
 	"eos-layout/pkg/log"
+	"flag"
 	"fmt"
 	"go.uber.org/zap"
 )
 
+var (
+	configFile = "./config.toml"
+)
+
+func init() {
+	flag.StringVar(&configFile, "c", "config.toml", "config file, eg: -c config.toml")
+}
+
 func main() {
-	cfg := config.New(config.WithFile("./config.toml"))
+	flag.Parse()
+	cfg := config.New(config.WithFile(configFile))
 	err := cfg.Load()
 	if err != nil {
 		panic(err)

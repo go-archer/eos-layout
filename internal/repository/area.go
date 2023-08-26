@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"eos-layout/internal/model"
+	"eos-layout/internal/status"
 )
 
 type AreaRepository interface {
@@ -38,8 +39,8 @@ func (r *areaRepository) Find(ctx context.Context, level int64, id int64, key st
 func (r *areaRepository) One(ctx context.Context, level int64, id int64) (*model.Area, error) {
 	area := &model.Area{}
 	db := r.db.WithContext(ctx)
-	err := db.Where("level=? and area_code=?", level, id).Find(area).Error
-	if err != nil {
+	err := db.Where("level=? and area_code=?", level, id).First(area).Error
+	if err != nil && !status.IsRecordNotFound(err) {
 		return nil, err
 	}
 	return area, nil
