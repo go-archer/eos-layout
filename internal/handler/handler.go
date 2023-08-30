@@ -5,6 +5,7 @@ import (
 	"eos-layout/pkg/log"
 	"eos-layout/pkg/verifier"
 	"errors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
@@ -45,7 +46,8 @@ func (h *Handler) Error(ctx *gin.Context, err error) {
 func (h *Handler) Bind(ctx *gin.Context, v any) error {
 	err := ctx.ShouldBind(v)
 	if err != nil {
-		errs, ok := err.(validator.ValidationErrors)
+		var errs validator.ValidationErrors
+		ok := errors.As(err, &errs)
 		if !ok {
 			return status.ErrorInvalidParams
 		}
@@ -57,7 +59,8 @@ func (h *Handler) Bind(ctx *gin.Context, v any) error {
 func (h *Handler) Struct(v any) error {
 	err := verifier.Validate.Struct(v)
 	if err != nil {
-		errs, ok := err.(validator.ValidationErrors)
+		var errs validator.ValidationErrors
+		ok := errors.As(err, &errs)
 		if !ok {
 			return err
 		}

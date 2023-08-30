@@ -18,11 +18,11 @@ func NewAreaService(s *Service, areaRepo repository.AreaRepository) AreaService 
 
 type areaService struct {
 	*Service
-	areaRepo repository.AreaRepository
+	areaRepository repository.AreaRepository
 }
 
 func (s *areaService) One(ctx context.Context, in *request.Area) (*response.Area, error) {
-	res, err := s.areaRepo.One(ctx, in.Level, in.ID)
+	res, err := s.areaRepository.One(ctx, in.Level, in.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +40,7 @@ func (s *areaService) One(ctx context.Context, in *request.Area) (*response.Area
 }
 
 func (s *areaService) Find(ctx context.Context, in *request.Area) (*response.AreaList, error) {
-	res, err := s.areaRepo.Find(ctx, in.Level, in.ID, in.Key)
+	res, err := s.areaRepository.Find(ctx, in.Level, in.ID, in.Key)
 	if err != nil {
 		return nil, err
 	}
