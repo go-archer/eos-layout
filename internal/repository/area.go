@@ -11,12 +11,12 @@ type AreaRepository interface {
 	Find(ctx context.Context, level, id int64, key string) ([]*model.Area, error)
 }
 
-func NewAreaRepository(r Repository) AreaRepository {
+func NewAreaRepository(r *Repository) AreaRepository {
 	return &areaRepository{r}
 }
 
 type areaRepository struct {
-	Repository
+	*Repository
 }
 
 func (r areaRepository) Find(ctx context.Context, level int64, id int64, key string) ([]*model.Area, error) {

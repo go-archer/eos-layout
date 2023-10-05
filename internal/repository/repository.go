@@ -15,31 +15,21 @@ import (
 	"gorm.io/gorm"
 )
 
-type Repository interface {
-	DB(ctx ...context.Context) *gorm.DB
-	Cache() *redis.Client
-	CacheGet(ctx context.Context, key string) ([]byte, error)
-	CacheSet(ctx context.Context, key string, data interface{}, exp time.Duration) error
-	AutoMigrate(table any) error
-	Lock(ctx context.Context, key string, acquire, timeout time.Duration) (string, error)
-	UnLock(ctx context.Context, key, code string) bool
-}
-
-type repository struct {
+type Repository struct {
 	cfg *config.Config
 	db  *gorm.DB
 	rds *redis.Client
 	log *log.Logger
 }
 
-func NewRepository(cfg *config.Config, log *log.Logger) Repository {
-	repo := &repository{cfg: cfg, log: log}
+func NewRepository(cfg *config.Config, log *log.Logger) *Repository {
+	repo := &Repository{cfg: cfg, log: log}
 	repo.initDB()
 	repo.initRedis()
 	return repo
 }
 
-func (r repository) initDB() {
+func (r Repository) initDB() {
 	if r.cfg.MySQL == nil {
 		return
 	}
@@ -50,7 +40,7 @@ func (r repository) initDB() {
 	r.db = db
 }
 
-func (r repository) initRedis() {
+func (r Repository) initRedis() {
 	if r.cfg.Redis == nil {
 		return
 	}
@@ -73,18 +63,14 @@ func (r repository) initRedis() {
 	r.rds = rds
 }
 
-func (r repository) DB(ctx ...context.Context) *gorm.DB {
+func (r Repository) DB(ctx ...context.Context) *gorm.DB {
 	if len(ctx) > 0 {
 		return r.db.WithContext(ctx[0])
 	}
 	return r.db
 }
 
-func (r repository) Cache() *redis.Client {
-	return r.rds
-}
-
-func (r repository) AutoMigrate(table any) error {
+func (r Repository) AutoMigrate(table any) error {
 	if r.cfg.MySQL.AutoMigrate {
 		err := r.db.AutoMigrate(table)
 		if err != nil {
@@ -95,7 +81,7 @@ func (r repository) AutoMigrate(table any) error {
 	return nil
 }
 
-func (r repository) Lock(ctx context.Context, key string, acquire, timeout time.Duration) (string, error) {
+func (r Repository) Lock(ctx context.Context, key string, acquire, timeout time.Duration) (string, error) {
 	code := uuid.UUID()
 	endTime := time.Now().Add(acquire).UnixNano()
 	for time.Now().UnixNano() <= endTime {
@@ -111,7 +97,7 @@ func (r repository) Lock(ctx context.Context, key string, acquire, timeout time.
 	return "", errors.New("lock timeout")
 }
 
-func (r repository) UnLock(ctx context.Context, key, code string) bool {
+func (r Repository) UnLock(ctx context.Context, key, code string) bool {
 	tx := func(tx *redis.Tx) error {
 		if v, err := tx.Get(ctx, key).Result(); err != nil && err != redis.Nil {
 			return err
@@ -135,14 +121,18 @@ func (r repository) UnLock(ctx context.Context, key, code string) bool {
 	}
 }
 
-func (r repository) CacheGet(ctx context.Context, key string) ([]byte, error) {
+func (r Repository) Cache() *redis.Client {
+	return r.rds
+}
+
+func (r Repository) CacheGet(ctx context.Context, key string) ([]byte, error) {
 	if r.rds == nil {
 		return nil, errors.New("redis connection error")
 	}
 	return r.rds.Get(ctx, key).Bytes()
 }
 
-func (r repository) CacheSet(ctx context.Context, key string, data interface{}, exp time.Duration) error {
+func (r Repository) CacheSet(ctx context.Context, key string, data interface{}, exp time.Duration) error {
 	if r.rds == nil {
 		return errors.New("redis connection error")
 	}
