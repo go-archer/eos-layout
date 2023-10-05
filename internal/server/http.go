@@ -34,7 +34,7 @@ type httpServer struct {
 	areaHandler handler.AreaHandler
 }
 
-func (s httpServer) Run() {
+func (s *httpServer) Run() {
 	defer func() {
 		if rec := recover(); rec != nil {
 			s.log.Sugar().Errorln("server run error: ", rec)
@@ -44,7 +44,7 @@ func (s httpServer) Run() {
 	http.Run(g, s.cfg.Host)
 }
 
-func (s httpServer) initServer() *gin.Engine {
+func (s *httpServer) initServer() *gin.Engine {
 	if s.cfg.Debug {
 		gin.SetMode(gin.DebugMode)
 	} else {
