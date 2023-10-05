@@ -15,6 +15,6 @@ type Area struct {
 	Lat        float64 `gorm:"lat"`         // 纬度
 }
 
-func (m *Area) TableName() string {
+func (m Area) TableName() string {
 	return "area"
 }

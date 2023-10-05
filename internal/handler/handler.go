@@ -10,11 +10,19 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func NewHandler(log *log.Logger) *Handler {
-	return &Handler{log: log}
+type Handler interface {
+	Success(ctx *gin.Context, data any)
+	Error(ctx *gin.Context, err error)
+	Bind(ctx *gin.Context, v any) error
+	Var(v any, tag string, label ...string) error
+	Log() *log.Logger
 }
 
-type Handler struct {
+func NewHandler(log *log.Logger) Handler {
+	return &handler{log: log}
+}
+
+type handler struct {
 	log *log.Logger
 }
 
@@ -23,7 +31,11 @@ type response struct {
 	Data any `json:"data"`
 }
 
-func (h *Handler) Success(ctx *gin.Context, data any) {
+func (h handler) Log() *log.Logger {
+	return h.log
+}
+
+func (h handler) Success(ctx *gin.Context, data any) {
 	if data == nil {
 		data = map[string]string{}
 	}
@@ -33,7 +45,7 @@ func (h *Handler) Success(ctx *gin.Context, data any) {
 	ctx.JSON(status.Success.StatusCode(), resp)
 }
 
-func (h *Handler) Error(ctx *gin.Context, err error) {
+func (h handler) Error(ctx *gin.Context, err error) {
 	var e *status.Error
 	switch {
 	case errors.As(err, &e):
@@ -43,7 +55,7 @@ func (h *Handler) Error(ctx *gin.Context, err error) {
 	}
 }
 
-func (h *Handler) Bind(ctx *gin.Context, v any) error {
+func (h handler) Bind(ctx *gin.Context, v any) error {
 	err := ctx.ShouldBind(v)
 	if err != nil {
 		var errs validator.ValidationErrors
@@ -56,7 +68,7 @@ func (h *Handler) Bind(ctx *gin.Context, v any) error {
 	return nil
 }
 
-func (h *Handler) Struct(v any) error {
+func (h handler) Struct(v any) error {
 	err := verifier.Validate.Struct(v)
 	if err != nil {
 		var errs validator.ValidationErrors
@@ -69,7 +81,7 @@ func (h *Handler) Struct(v any) error {
 	return nil
 }
 
-func (h *Handler) Var(v any, tag string, label ...string) error {
+func (h handler) Var(v any, tag string, label ...string) error {
 	err := verifier.Validate.Var(v, tag)
 	if err != nil {
 		res := verifier.Translate(err)

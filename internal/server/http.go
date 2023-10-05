@@ -4,7 +4,7 @@ import (
 	"eos-layout/internal/config"
 	"eos-layout/internal/handler"
 	"eos-layout/internal/middleware"
-	"eos-layout/internal/router/v1"
+	v1 "eos-layout/internal/router/v1"
 	"eos-layout/pkg/http"
 	"eos-layout/pkg/log"
 
@@ -34,7 +34,7 @@ type httpServer struct {
 	areaHandler handler.AreaHandler
 }
 
-func (s *httpServer) Run() {
+func (s httpServer) Run() {
 	defer func() {
 		if rec := recover(); rec != nil {
 			s.log.Sugar().Errorln("server run error: ", rec)
@@ -44,7 +44,7 @@ func (s *httpServer) Run() {
 	http.Run(g, s.cfg.Host)
 }
 
-func (s *httpServer) initServer() *gin.Engine {
+func (s httpServer) initServer() *gin.Engine {
 	if s.cfg.Debug {
 		gin.SetMode(gin.DebugMode)
 	} else {
@@ -54,8 +54,8 @@ func (s *httpServer) initServer() *gin.Engine {
 	// 中间件配置
 	e.Use(
 		middleware.CORS(),
-		middleware.ResponseLogger(s.log),
 		middleware.RequestLogger(s.log),
+		middleware.ResponseLogger(s.log),
 	)
 	// 路由配置
 	api := e.Group("/api")

@@ -12,12 +12,12 @@ type AreaService interface {
 	Find(ctx context.Context, in *request.Area) (*response.AreaList, error)
 }
 
-func NewAreaService(s *Service, areaRepo repository.AreaRepository) AreaService {
+func NewAreaService(s Service, areaRepo repository.AreaRepository) AreaService {
 	return &areaService{s, areaRepo}
 }
 
 type areaService struct {
-	*Service
+	Service
 	areaRepository repository.AreaRepository
 }
 

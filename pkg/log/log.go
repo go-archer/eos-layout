@@ -10,17 +10,17 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-const LOGGER_KEY = "EOSLOG"
+const LOGGER_KEY = "LOGGER"
 
 type Logger struct {
 	*zap.Logger
 }
 
 func New(cfg *Config) *Logger {
-	return initLog(cfg)
+	return initLogger(cfg)
 }
 
-func initLog(cfg *Config) *Logger {
+func initLogger(cfg *Config) *Logger {
 	if cfg == nil {
 		cfg = defaultConfig
 	}

@@ -2,6 +2,7 @@ package v1
 
 import (
 	"eos-layout/internal/handler"
+
 	"github.com/gin-gonic/gin"
 )
 

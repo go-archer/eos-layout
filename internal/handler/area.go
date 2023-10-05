@@ -22,12 +22,12 @@ type AreaHandler interface {
 	CommitteeList(ctx *gin.Context)
 }
 
-func NewAreaHandler(h *Handler, areaService service.AreaService) AreaHandler {
+func NewAreaHandler(h Handler, areaService service.AreaService) AreaHandler {
 	return &areaHandler{h, areaService}
 }
 
 type areaHandler struct {
-	*Handler
+	Handler
 	areaService service.AreaService
 }
 

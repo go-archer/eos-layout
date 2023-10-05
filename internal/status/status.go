@@ -20,15 +20,15 @@ type Response struct {
 	Message string `json:"message"`
 }
 
-func (e *Error) Error() string {
+func (e Error) Error() string {
 	return e.message
 }
 
-func (e *Error) Code() int {
+func (e Error) Code() int {
 	return e.code
 }
 
-func (e *Error) Response(errs ...error) (int, *Response) {
+func (e Error) Response(errs ...error) (int, *Response) {
 	msg := e.Error()
 	if len(errs) > 0 {
 		msg = errs[0].Error()
@@ -36,7 +36,7 @@ func (e *Error) Response(errs ...error) (int, *Response) {
 	return e.StatusCode(), &Response{Code: e.code, Message: msg}
 }
 
-func (e *Error) Message(msg string) *Error {
+func (e Error) Message(msg string) *Error {
 	err := &Error{code: e.code, message: e.message}
 	if len(msg) != 0 {
 		err.message = msg
@@ -44,7 +44,7 @@ func (e *Error) Message(msg string) *Error {
 	return err
 }
 
-func (e *Error) StatusCode() int {
+func (e Error) StatusCode() int {
 	switch e.Code() {
 	case ErrorServer.Code():
 		return http.StatusInternalServerError

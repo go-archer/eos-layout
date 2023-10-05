@@ -11,16 +11,16 @@ type AreaRepository interface {
 	Find(ctx context.Context, level, id int64, key string) ([]*model.Area, error)
 }
 
-func NewAreaRepository(r *Repository) AreaRepository {
+func NewAreaRepository(r Repository) AreaRepository {
 	return &areaRepository{r}
 }
 
 type areaRepository struct {
-	*Repository
+	Repository
 }
 
-func (r *areaRepository) Find(ctx context.Context, level int64, id int64, key string) ([]*model.Area, error) {
-	db := r.db.WithContext(ctx)
+func (r areaRepository) Find(ctx context.Context, level int64, id int64, key string) ([]*model.Area, error) {
+	db := r.DB(ctx)
 	tx := db.Where("level=?", level)
 	if id != 0 {
 		tx = tx.Where("parent_code=?", id)
@@ -36,9 +36,9 @@ func (r *areaRepository) Find(ctx context.Context, level int64, id int64, key st
 	return areas, nil
 }
 
-func (r *areaRepository) One(ctx context.Context, level int64, id int64) (*model.Area, error) {
+func (r areaRepository) One(ctx context.Context, level int64, id int64) (*model.Area, error) {
 	area := &model.Area{}
-	db := r.db.WithContext(ctx)
+	db := r.DB(ctx)
 	err := db.Where("level=? and area_code=?", level, id).First(area).Error
 	if err != nil && !status.IsRecordNotFound(err) {
 		return nil, err

@@ -29,7 +29,8 @@ type Config struct {
 }
 
 type MySQL struct {
-	DSN string `toml:"dsn" json:"dsn" yaml:"dsn"`
+	DSN         string `toml:"dsn" json:"dsn" yaml:"dsn"`
+	AutoMigrate bool   `toml:"auto_migrate" json:"auto_migrate" yaml:"auto_migrate"`
 }
 
 type Redis struct {

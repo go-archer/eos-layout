@@ -7,11 +7,12 @@ import (
 	"eos-layout/pkg/md5"
 	"eos-layout/pkg/uuid"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"io"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func RequestLogger(log *log.Logger) gin.HandlerFunc {
