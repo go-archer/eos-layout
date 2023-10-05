@@ -3,6 +3,13 @@ package service
 import (
 	"eos-layout/internal/config"
 	"eos-layout/pkg/log"
+
+	"github.com/google/wire"
+)
+
+var Set = wire.NewSet(
+	NewService,
+	NewAreaService,
 )
 
 // Service 基础服务

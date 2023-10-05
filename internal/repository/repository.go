@@ -9,10 +9,16 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+)
+
+var Set = wire.NewSet(
+	NewRepository,
+	NewAreaRepository,
 )
 
 type Repository struct {

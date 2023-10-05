@@ -8,14 +8,20 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/google/wire"
 )
 
-func NewHandler(log *log.Logger) *Handler {
-	return &Handler{log: log}
-}
+var Set = wire.NewSet(
+	NewHandler,
+	NewAreaHandler,
+)
 
 type Handler struct {
 	log *log.Logger
+}
+
+func NewHandler(log *log.Logger) *Handler {
+	return &Handler{log: log}
 }
 
 type response struct {

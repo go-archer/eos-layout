@@ -4,30 +4,16 @@
 package main
 
 import (
-	"eos-layout/internal/config"
-	"eos-layout/internal/handler"
-	"eos-layout/internal/repository"
-	"eos-layout/internal/server"
-	"eos-layout/internal/service"
-	"eos-layout/pkg/log"
+	"imall/internal/config"
+	"imall/internal/handler"
+	"imall/internal/repository"
+	"imall/internal/server"
+	"imall/internal/service"
+	"imall/pkg/log"
+
 	"github.com/google/wire"
 )
 
-var HandlerSet = wire.NewSet(
-	handler.NewHandler,
-	handler.NewAreaHandler,
-)
-
-var ServiceSet = wire.NewSet(
-	service.NewService,
-	service.NewAreaService,
-)
-
-var RepositorySet = wire.NewSet(
-	repository.NewRepository,
-	repository.NewAreaRepository,
-)
-
 func newApp(cfg *config.Config, logger *log.Logger) (server.Server, func(), error) {
-	panic(wire.Build(RepositorySet, ServiceSet, HandlerSet, server.NewHTTPServer))
+	panic(wire.Build(repository.Set, service.Set, handler.Set, server.NewHTTPServer))
 }
