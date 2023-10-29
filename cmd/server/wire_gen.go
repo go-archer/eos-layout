@@ -13,7 +13,6 @@ import (
 	"eos-layout/internal/server"
 	"eos-layout/internal/service"
 	"eos-layout/pkg/log"
-	"github.com/google/wire"
 )
 
 // Injectors from wire.go:
@@ -29,11 +28,3 @@ func newApp(cfg *config.Config, logger *log.Logger) (server.Server, func(), erro
 	return serverServer, func() {
 	}, nil
 }
-
-// wire.go:
-
-var HandlerSet = wire.NewSet(handler.NewHandler, handler.NewAreaHandler)
-
-var ServiceSet = wire.NewSet(service.NewService, service.NewAreaService)
-
-var RepositorySet = wire.NewSet(repository.NewRepository, repository.NewAreaRepository)

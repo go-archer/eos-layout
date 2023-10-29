@@ -4,12 +4,12 @@
 package main
 
 import (
-	"imall/internal/config"
-	"imall/internal/handler"
-	"imall/internal/repository"
-	"imall/internal/server"
-	"imall/internal/service"
-	"imall/pkg/log"
+	"eos-layout/internal/config"
+	"eos-layout/internal/handler"
+	"eos-layout/internal/repository"
+	"eos-layout/internal/server"
+	"eos-layout/internal/service"
+	"eos-layout/pkg/log"
 
 	"github.com/google/wire"
 )

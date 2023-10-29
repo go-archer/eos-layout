@@ -8,6 +8,7 @@ import (
 	"eos-layout/pkg/http"
 	"eos-layout/pkg/log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -51,9 +52,15 @@ func (s *httpServer) initServer() *gin.Engine {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	e := gin.Default()
+	e.NoRoute(handler.NoRouteHandler())
+	e.NoMethod(handler.NoMethodHandler())
+	// 静态资源加载
+	//e.StaticFile("/", "./www/index.html")
+	//e.Static("/assets", "./www/assets")
+
 	// 中间件配置
 	e.Use(
-		middleware.CORS(),
+		cors.Default(),
 		middleware.RequestLogger(s.log),
 		middleware.ResponseLogger(s.log),
 	)

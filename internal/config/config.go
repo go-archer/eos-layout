@@ -29,12 +29,20 @@ type Config struct {
 }
 
 type MySQL struct {
-	DSN         string `toml:"dsn" json:"dsn" yaml:"dsn"`
+	Host        string `toml:"host" json:"host" yaml:"host"`
+	Port        int    `toml:"port" json:"port" yaml:"port"`
+	DBName      string `toml:"db_name" json:"db_name" yaml:"db_name"`
+	Username    string `toml:"username" json:"username" yaml:"user"`
+	Password    string `toml:"password" json:"password" yaml:"password"`
+	MaxIDLE     int    `toml:"max_idle" json:"max_idle" yaml:"max_idle"` // 最大空闲数
+	MaxOpen     int    `toml:"max_open" json:"max_open" yaml:"max_open"` // 最大连接数
+	Timeout     int    `toml:"timeout" json:"timeout" yaml:"timeout"`    // 连接超时
 	AutoMigrate bool   `toml:"auto_migrate" json:"auto_migrate" yaml:"auto_migrate"`
 }
 
 type Redis struct {
 	Addr         string `toml:"addr" json:"addr" yaml:"addr"`
+	Username     string `toml:"username" json:"username" yaml:"username"`
 	Password     string `toml:"password" json:"password" yaml:"password"`
 	DB           int    `toml:"db" json:"db" yaml:"db"`
 	DialTimeout  int64  `toml:"dial_timeout" json:"dial_timeout" yaml:"dial_timeout"`

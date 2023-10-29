@@ -1,6 +1,9 @@
 package status
 
 import (
+	"database/sql"
+	"eos-layout/pkg/verifier"
+	"errors"
 	"net/http"
 	"sync"
 )
@@ -31,7 +34,7 @@ func (e Error) Code() int {
 func (e Error) Response(errs ...error) (int, *Response) {
 	msg := e.Error()
 	if len(errs) > 0 {
-		msg = errs[0].Error()
+		msg = verifier.Translate(errs[0])
 	}
 	return e.StatusCode(), &Response{Code: e.code, Message: msg}
 }
@@ -46,8 +49,10 @@ func (e Error) Message(msg string) *Error {
 
 func (e Error) StatusCode() int {
 	switch e.Code() {
-	case ErrorServer.Code():
-		return http.StatusInternalServerError
+	case ErrorLogin.Code():
+		return http.StatusForbidden
+	case ErrorAuthorize.Code():
+		return http.StatusUnauthorized
 	default:
 		return http.StatusOK
 	}
@@ -65,13 +70,19 @@ func NewError(code int, message string) *Error {
 
 var (
 	Success            = NewError(0, "success")
-	ErrorServer        = NewError(1000, "服务内部错误")
-	ErrorInvalidParams = NewError(1001, "传入参数错误")
+	ErrorAuthorize     = NewError(401, "authentication failed")
+	ErrorLogin         = NewError(403, "please log in again")
+	ErrorServer        = NewError(1000, "service internal error")
+	ErrorInvalidParams = NewError(1001, "error passing parameter")
+	ErrorMobile        = NewError(1002, "wrong phone number")
+	ErrorDataQuery     = NewError(1003, "data query error")
+	ErrorUserNotFound  = NewError(1004, "the user does not exist")
+	ErrorPassword      = NewError(1005, "the password is incorrect")
 )
 
 func IsRecordNotFound(err error) bool {
 	if err != nil {
-		if err.Error() == "record not found" {
+		if errors.Is(err, sql.ErrNoRows) {
 			return true
 		}
 	}

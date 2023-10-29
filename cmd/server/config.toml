@@ -2,8 +2,22 @@ host = "0.0.0.0:8080"
 debug = true
 
 [mysql]
-dsn = "root:123456@tcp(127.0.0.1:3306)/transmit?charset=utf8mb4&parseTime=true&loc=Local"
+host = "127.0.0.1"
+port = 3306
+db_name = "ido"
+username = "root"
+password = "123456"
+max_idle = 10
+max_open = 30
+timeout = 30
 
+[redis]
+addr = "127.0.0.1:6379"
+username = ""
+password = "123456"
+dial_timeout = 30000
+read_timeout = 300
+write_timeout = 300
 
 [log]
 file = "./logs/out.log"

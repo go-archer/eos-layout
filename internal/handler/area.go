@@ -28,7 +28,7 @@ func NewAreaHandler(h *Handler, areaService service.AreaService) AreaHandler {
 
 type areaHandler struct {
 	*Handler
-	areaService service.AreaService
+	service service.AreaService
 }
 
 func (h *areaHandler) Province(ctx *gin.Context) {
@@ -41,7 +41,7 @@ func (h *areaHandler) Province(ctx *gin.Context) {
 		Level: 0,
 		ID:    id,
 	}
-	res, err := h.areaService.One(ctx, in)
+	res, err := h.service.One(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -56,7 +56,7 @@ func (h *areaHandler) ProvinceList(ctx *gin.Context) {
 		ID:    0,
 		Key:   key,
 	}
-	res, err := h.areaService.Find(ctx, in)
+	res, err := h.service.Find(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -74,7 +74,7 @@ func (h *areaHandler) City(ctx *gin.Context) {
 		Level: 1,
 		ID:    id,
 	}
-	res, err := h.areaService.One(ctx, in)
+	res, err := h.service.One(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -94,7 +94,7 @@ func (h *areaHandler) CityList(ctx *gin.Context) {
 		ID:    id,
 		Key:   key,
 	}
-	res, err := h.areaService.Find(ctx, in)
+	res, err := h.service.Find(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -112,7 +112,7 @@ func (h *areaHandler) District(ctx *gin.Context) {
 		Level: 2,
 		ID:    id,
 	}
-	res, err := h.areaService.One(ctx, in)
+	res, err := h.service.One(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -132,7 +132,7 @@ func (h *areaHandler) DistrictList(ctx *gin.Context) {
 		ID:    id,
 		Key:   key,
 	}
-	res, err := h.areaService.Find(ctx, in)
+	res, err := h.service.Find(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -150,7 +150,7 @@ func (h *areaHandler) Street(ctx *gin.Context) {
 		Level: 4,
 		ID:    id,
 	}
-	res, err := h.areaService.One(ctx, in)
+	res, err := h.service.One(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -170,7 +170,7 @@ func (h *areaHandler) StreetList(ctx *gin.Context) {
 		ID:    id,
 		Key:   key,
 	}
-	res, err := h.areaService.Find(ctx, in)
+	res, err := h.service.Find(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -188,7 +188,7 @@ func (h *areaHandler) Committee(ctx *gin.Context) {
 		Level: 5,
 		ID:    id,
 	}
-	res, err := h.areaService.One(ctx, in)
+	res, err := h.service.One(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return
@@ -208,7 +208,7 @@ func (h *areaHandler) CommitteeList(ctx *gin.Context) {
 		ID:    id,
 		Key:   key,
 	}
-	res, err := h.areaService.Find(ctx, in)
+	res, err := h.service.Find(ctx, in)
 	if err != nil {
 		h.Error(ctx, err)
 		return

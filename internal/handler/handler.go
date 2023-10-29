@@ -97,3 +97,15 @@ func (h *Handler) Var(v any, tag string, label ...string) error {
 	}
 	return nil
 }
+
+func NoMethodHandler() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.JSON(405, gin.H{"code": 405, "message": "methods are not allowed"})
+	}
+}
+
+func NoRouteHandler() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		ctx.JSON(500, gin.H{"code": 500, "message": "no handler function was found for the request route"})
+	}
+}
