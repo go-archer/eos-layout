@@ -31,6 +31,7 @@ type Repository interface {
 	Lock(ctx context.Context, key string, acquire, timeout time.Duration) (string, error)
 	UnLock(ctx context.Context, key, code string) bool
 	Context() *Context
+	AutoMigrate(table any) error
 	Log() *log.Logger
 }
 
